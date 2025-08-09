@@ -1,344 +1,286 @@
-# 🛡️ Worm Detector
+# Worm Detector - Network Security Monitoring Tool
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS%20%7C%20windows-lightgrey)](https://github.com/yourusername/worm-detector)
+![Worm Detector Banner](https://via.placeholder.com/800x200?text=Worm+Detector+Banner)
 
-A comprehensive network security tool for detecting worms, malware, and suspicious network activities in real-time. Built with Python and designed for security professionals, network administrators, and researchers.
+Worm Detector is a Python-based network security tool designed to detect suspicious activities such as worms and malware in local networks. This tool uses signature-based and heuristic detection approaches to identify potential threats in real-time.
 
-## ✨ Features
+## Key Features
 
-### 🔍 Network Discovery & Scanning
-- **ARP-based Host Discovery**: Identify active hosts on network segments
-- **TCP SYN Port Scanning**: Fast and stealthy port enumeration
-- **Service Detection**: Identify running services and versions
-- **Customizable Network Ranges**: Flexible subnet scanning capabilities
+- 🔍 **Automated Network Scanning**: 
+  - Active host discovery using ARP scanning
+  - Open port scanning and service identification
+  - Banner grabbing for accurate identification
 
-### 🦠 Malware Detection
-- **Signature-based Detection**: Extensible hex pattern and regex matching
-- **Payload Hash Verification**: Known malware hash identification
-- **Real-time Pattern Matching**: Live traffic analysis for malicious signatures
-- **Multi-protocol Support**: HTTP, TCP, UDP payload inspection
+- 🛡️ **Multi-Layer Detection**:
+  - Signature-based detection for known malware/worms
+  - Behavior-based anomaly detection (flood, port scan)
+  - Identification of suspicious activities on uncommon ports
 
-### 📊 Network Anomaly Detection
-- **Flood Detection**: Identify network flood attacks (SYN, UDP, ICMP)
-- **Port Scan Detection**: Recognize reconnaissance activities
-- **Connection Pattern Analysis**: Detect unusual network behaviors
-- **Threshold-based Alerting**: Configurable detection sensitivity
+- 📊 **Real-Time Monitoring**:
+  - Continuous network traffic analysis
+  - Instant alerting for suspicious activities
+  - Centralized logging with full context
 
-### 🖥️ Real-time Monitoring
-- **Live Packet Capture**: Continuous network traffic analysis
-- **Parallel Processing**: Multi-threaded detection systems
-- **Rich CLI Interface**: Beautiful terminal output with progress bars
-- **Instant Alerts**: Real-time threat notifications
+- 🔄 **Signature Management**:
+  - Easy-to-update signature system
+  - Flexible signature formats (hex, regex, hash)
+  - Multi-file signature support
 
-### 📝 Logging & Reporting
-- **Comprehensive Logging**: Detailed detection logs with timestamps
-- **Alert Context**: Full packet details and detection reasoning
-- **Persistent Storage**: Long-term log retention and analysis
-- **Export Capabilities**: Multiple output formats for integration
-
-## 🚀 Quick Start
+## Installation
 
 ### Prerequisites
-- Python 3.7 or higher
-- Administrative/root privileges (for packet capture)
-- Network interface access
 
-### Installation
+- Python 3.9 or newer
+- Root/administrator access (for packet sniffing)
+- Operating system: Linux, macOS, or Windows (with WinPcap/Npcap)
 
+### Installation Steps
+
+1. Clone the repository:
 ```bash
-# Clone the repository
-git clone https://github.com/davanico1122/worm-detector-.git
+git clone https://github.com/yourusername/worm-detector.git
 cd worm-detector
+```
 
-# Install dependencies
+2. Create virtual environment (recommended):
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate    # Windows
+```
+
+3. Install dependencies:
+```bash
 pip install -r requirements.txt
-
-# Make executable (Linux/macOS)
-chmod +x worm_detector.py
 ```
 
-### Basic Usage
+4. For Windows users:
+   - Install [Npcap](https://npcap.com/) or WinPcap
+   - Run command prompt as administrator
+
+## Usage
+
+### Basic Network Scanning
 
 ```bash
-# Scan local network for hosts and vulnerabilities
 sudo python worm_detector.py scan
+```
 
-# Monitor network traffic for threats
+This command will:
+1. Scan the local network (default: 192.168.1.0/24)
+2. Detect active hosts
+3. Scan common open ports
+4. Display results in table format
+
+Additional options:
+- `-n/--network`: Specify network (example: 192.168.0.0/24)
+- `-p/--ports`: Specific ports to scan (example: 22,80,443)
+
+Example:
+```bash
+sudo python worm_detector.py scan -n 10.0.0.0/24 -p 21,22,80,443
+```
+
+### Real-Time Monitoring
+
+```bash
 sudo python worm_detector.py monitor
+```
 
-# Update malware signatures
+This feature will:
+1. Monitor network traffic in real-time
+2. Detect suspicious activities
+3. Generate immediate alerts in CLI
+4. Log all detections to detections.log
+
+Additional options:
+- `-i/--interface`: Specify network interface (example: eth0, en0)
+
+Example:
+```bash
+sudo python worm_detector.py monitor -i eth0
+```
+
+### Signature Updates
+
+```bash
 python worm_detector.py update
 ```
 
-## 📖 Detailed Usage
+Note: This feature is currently a placeholder and requires further implementation for integration with external signature feeds.
 
-### Network Scanning
+## Detection Methods
 
-```bash
-# Scan specific network range
-sudo python worm_detector.py scan --network 192.168.1.0/24
+### 1. Signature-Based Detection
+The tool uses a signature database to detect known malware/worms. Signatures are stored in JSON format in the `signatures/` directory.
 
-# Scan specific ports
-sudo python worm_detector.py scan --ports 22,80,443,8080
-
-# Comprehensive scan with custom range and ports
-sudo python worm_detector.py scan -n 10.0.0.0/16 -p 1-1000
-```
-
-### Real-time Monitoring
-
-```bash
-# Monitor default interface
-sudo python worm_detector.py monitor
-
-# Monitor specific interface
-sudo python worm_detector.py monitor --interface eth0
-
-# Monitor with verbose output
-sudo python worm_detector.py monitor -v
-```
-
-### Signature Management
-
-```bash
-# Update signatures from remote source
-python worm_detector.py update
-
-# Validate signature database
-python worm_detector.py update --validate
-
-# Show signature statistics
-python worm_detector.py update --stats
-```
-
-## ⚙️ Configuration
-
-### Command Line Options
-
-#### Scan Command
-| Option | Short | Description | Example |
-|--------|-------|-------------|---------|
-| `--network` | `-n` | Network range to scan | `192.168.1.0/24` |
-| `--ports` | `-p` | Ports to scan | `22,80,443` or `1-1000` |
-| `--timeout` | `-t` | Connection timeout | `5` (seconds) |
-| `--threads` | `-th` | Number of threads | `50` |
-
-#### Monitor Command
-| Option | Short | Description | Example |
-|--------|-------|-------------|---------|
-| `--interface` | `-i` | Network interface | `eth0`, `wlan0` |
-| `--verbose` | `-v` | Verbose output | Flag |
-| `--filter` | `-f` | BPF filter | `tcp port 80` |
-| `--duration` | `-d` | Monitor duration | `3600` (seconds) |
-
-#### Update Command
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--validate` | | Validate signatures |
-| `--stats` | | Show statistics |
-| `--source` | `-s` | Signature source URL |
-
-### Configuration File
-
-Create `config.json` for persistent settings:
-
+Signature format:
 ```json
 {
-    "scanning": {
-        "default_network": "192.168.1.0/24",
-        "default_ports": [22, 80, 443, 8080],
-        "timeout": 5,
-        "threads": 50
-    },
-    "monitoring": {
-        "default_interface": "eth0",
-        "capture_filter": "",
-        "log_level": "INFO"
-    },
-    "detection": {
-        "signature_path": "./signatures/",
-        "enable_heuristics": true,
-        "flood_threshold": 100,
-        "scan_threshold": 10
-    }
+  "name": "Malware Name",
+  "pattern": "Detection pattern (hex, regex, or hash)",
+  "type": "hex|regex|hash",
+  "threat": "Threat description",
+  "severity": "critical|high|medium|low"
 }
 ```
 
-## 🏗️ Architecture
+Detection examples:
+- Hex pattern matching in payload
+- Regular expression matching
+- MD5 hash verification of payload
 
-### Core Components
+### 2. Anomaly-Based Detection
+Behavior-based detection uses heuristic approaches to identify:
+- **Network Floods**: Abnormal packet volume from a single source
+- **Port Scans**: Attempts to access many ports in a short time
+- **Suspicious Connections**: Connections to uncommon ports or known malware ports
+- **Unusual Traffic Patterns**: Abnormal communication patterns
+
+Configurable thresholds:
+- Flood threshold (default: 100 packets/10 seconds)
+- Port scan threshold (default: 15 different ports)
+- Unusual port connection threshold (default: 5 connections)
+
+## Project Structure
 
 ```
 worm-detector/
-├── worm_detector.py
-├── modules/
-│   ├── network_scan.py
-│   ├── signature_check.py
-│   ├── anomaly_detect.py
-│   └── __init__.py
-├── signatures/
+├── worm_detector.py        # Main CLI utility
+├── modules/                # Detection modules
+│   ├── __init__.py         # Package initialization
+│   ├── network_scan.py     # Host & port scanning
+│   ├── signature_check.py  # Signature-based detection
+│   └── anomaly_detect.py   # Behavior-based anomaly detection
+├── signatures/             # Signature database
 │   └── known_signatures.json
-├── detections.log
-├── README.md
-└── requirements.txt
+├── detections.log          # Detection results log (created at runtime)
+├── README.md               # Project documentation
+└── requirements.txt        # Dependencies
 ```
 
-### Detection Engines
+## Logging and Reporting
 
-1. **Signature Engine**: Pattern matching for known threats
-2. **Anomaly Engine**: Statistical analysis for unknown threats
-3. **Heuristic Engine**: Behavioral analysis and AI-based detection
-4. **Correlation Engine**: Multi-vector attack detection
+All detections are logged in the `detections.log` file with the format:
+```
+[Timestamp] [Level] - Message
+```
 
-### Extensibility
+Example log entries:
+```
+2023-10-15 14:30:25,123 - WARNING - SIGNATURE: SQL_Slammer | Worm
+2023-10-15 14:31:45,678 - WARNING - FLOOD: 192.168.1.15 sent 250 packets in 10s
+2023-10-15 14:32:10,987 - WARNING - PORT SCAN: 192.168.1.23 scanned 25 ports
+2023-10-15 14:33:05,456 - WARNING - SUSPICIOUS PORT: 192.168.1.42 accessed BackOrifice port (31337)
+```
 
-The tool is designed with modularity in mind:
+## Customization
 
-```python
-# Adding custom detectors
-class CustomDetector(BaseDetector):
-    def analyze(self, packet):
-        # Custom detection logic
-        return detection_result
+### Adding New Signatures
+1. Create a new JSON file in the `signatures/` directory
+2. Add signatures in the appropriate format
+3. Restart monitoring to load new signatures
 
-# Adding new signatures
+Example signature:
+```json
 {
-    "name": "Custom Malware",
-    "type": "hex",
-    "pattern": "deadbeef",
-    "severity": "high"
+  "name": "New_Malware_Threat",
+  "pattern": "\\x90\\x90\\x90\\x90\\x90",
+  "type": "hex",
+  "threat": "Newly discovered malware threat",
+  "severity": "high"
 }
 ```
 
-## 🛡️ Security & Ethics
-
-### Defensive Purpose Only
-- **Detection Only**: No offensive capabilities included
-- **No Exploitation**: Does not attempt to exploit vulnerabilities
-- **Passive Analysis**: Read-only network analysis
-- **Legal Compliance**: Designed for authorized network monitoring
-
-### Privacy & Legal Considerations
-- **Authorization Required**: Only use on networks you own or have permission to monitor
-- **Data Protection**: Sensitive data is not logged or transmitted
-- **Compliance**: Adheres to responsible disclosure practices
-- **Documentation**: Maintains audit trail of all activities
-
-## 🔧 Development
-
-### Requirements
-```txt
-scapy>=2.5.0
-rich>=13.0.0
-python>=3.9
+### Adjusting Detection Thresholds
+Anomaly detection thresholds can be adjusted in `modules/anomaly_detect.py`:
+```python
+class AnomalyDetector:
+    def __init__(self, 
+                 flood_threshold: int = 150,       # Change flood threshold value
+                 port_scan_threshold: int = 20,    # Change port scan threshold
+                 anomaly_window: int = 15,          # Change detection time window
+                 connection_threshold: int = 60):   # Change connection threshold
 ```
 
-### Testing
-```bash
-# Run unit tests
-python -m pytest tests/
+## Limitations and Security Notes
 
-# Run integration tests
-python -m pytest tests/integration/
+1. **Technical Limitations**:
+   - Signature-based detection is effective only for known malware
+   - Anomaly detection may produce false positives in dynamic network environments
+   - Performance may be affected in high-speed networks (>1Gbps)
 
-# Generate coverage report
-coverage run -m pytest && coverage report
-```
+2. **Security Considerations**:
+   - This tool is for detection and monitoring purposes only
+   - Does not contain exploitation or malware spreading functions
+   - Requires administrator privileges for sniffing operations
+   - Usage must comply with local network policies and applicable regulations
 
-### Contributing
+3. **Platform Limitations**:
+   - Windows requires Npcap/WinPcap installation
+   - Some systems may need temporary firewall disabling for scanning
+
+## Contributing
+
+Contributions to this project are highly welcome! Here's how to contribute:
+
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a new feature branch (`git checkout -b new-feature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin new-feature`)
+5. Create a pull request
 
-## 📊 Detection Examples
+Areas needing contribution:
+- Implementation of automatic signature updates
+- Addition of protocol-specific detection (DNS, HTTP, etc.)
+- Integration with threat intelligence feeds
+- UI and reporting improvements
 
-### Malware Signatures
-- **Known Worm Patterns**: Conficker, Stuxnet, WannaCry signatures
-- **Trojan Communications**: C&C server communications
-- **Backdoor Traffic**: Remote access tool detection
-- **Cryptocurrency Miners**: Mining pool communications
+## Troubleshooting
 
-### Network Anomalies
-- **SYN Flood Attacks**: High-volume connection attempts
-- **Port Scanning**: Sequential or random port probing
-- **DNS Tunneling**: Suspicious DNS query patterns
-- **Data Exfiltration**: Unusual outbound traffic volumes
+### Common Issues and Solutions
 
-### Advanced Threats
-- **APT Indicators**: Advanced persistent threat signatures
-- **Zero-day Exploits**: Heuristic-based unknown threat detection
-- **Lateral Movement**: Internal network reconnaissance
-- **Living off the Land**: Abuse of legitimate tools
+**Issue: Cannot capture packets on Windows**
+- Solution:
+  1. Ensure Npcap/WinPcap is installed
+  2. Run as administrator
+  3. Try different interface with `-i` option
 
-## 📋 System Requirements
+**Issue: Signatures not detected**
+- Solution:
+  1. Check signature file format
+  2. Ensure signature files are in correct directory
+  3. Verify signature patterns match traffic
 
-### Minimum Requirements
-- **OS**: Linux (Ubuntu 18.04+), macOS (10.14+), Windows 10
-- **Python**: 3.7+
-- **RAM**: 512 MB available
-- **Storage**: 100 MB free space
-- **Network**: Administrative privileges required
+**Issue: Slow performance during monitoring**
+- Solution:
+  1. Limit monitoring interface with `-i` option
+  2. Reduce load with BPF filters
+  3. Increase anomaly detection thresholds
 
-### Recommended Requirements
-- **OS**: Linux (Ubuntu 20.04+), macOS (11+), Windows 11
-- **Python**: 3.9+
-- **RAM**: 2 GB available
-- **Storage**: 1 GB free space
-- **CPU**: Multi-core processor for better performance
+**Issue: No scan results**
+- Solution:
+  1. Ensure device is on correct network
+  2. Check firewall policies
+  3. Try smaller network range (e.g., /28)
 
-## 🆘 Troubleshooting
+## Development Roadmap
 
-### Common Issues
+- [ ] Integration with threat intelligence feeds
+- [ ] Implementation of automatic signature updates
+- [ ] Addition of web-based GUI
+- [ ] Machine learning-based detection
+- [ ] Automatic response system (e.g., auto-blocking)
+- [ ] Distributed monitoring support
 
-**Permission Denied**
-```bash
-# Solution: Run with sudo/administrator privileges
-sudo python worm_detector.py monitor
-```
+## License
 
-**Interface Not Found**
-```bash
-# List available interfaces
-ip link show  # Linux
-ifconfig -l   # macOS
-```
+This project is licensed under the [MIT License](LICENSE).
 
-**Signature Update Fails**
-```bash
-# Check internet connection and proxy settings
-python worm_detector.py update --verbose
-```
+## Disclaimer
 
-## 📚 Documentation
-
-- [Installation Guide](docs/installation.md)
-- [Configuration Reference](docs/configuration.md)
-- [API Documentation](docs/api.md)
-- [Signature Development](docs/signatures.md)
-- [Troubleshooting Guide](docs/troubleshooting.md)
-
-## 🤝 Support
-
-- **Issues**: [GitHub Issues](https://github.com/yourusername/worm-detector/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/worm-detector/discussions)
-- **Security**: security@yourdomain.com
-- **Documentation**: [Wiki](https://github.com/yourusername/worm-detector/wiki)
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Scapy Team**: For the excellent packet manipulation library
-- **Security Community**: For threat intelligence and signatures
-- **Contributors**: All developers who have contributed to this project
-- **Testers**: Security professionals who helped validate the tool
+This tool is intended solely for security and educational purposes. Users are fully responsible for using this tool in accordance with applicable laws and regulations. The developers are not responsible for misuse or damage caused by the use of this tool.
 
 ---
 
-**⚠️ Disclaimer**: This tool is intended for educational and defensive security purposes only. Users are responsible for ensuring compliance with applicable laws and regulations. The authors assume no liability for misuse of this software.
+With Worm Detector, you can proactively monitor your network and detect threats before they cause damage. For questions or issues, please open an issue in the GitHub repository.
