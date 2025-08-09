@@ -49,7 +49,7 @@ A comprehensive network security tool for detecting worms, malware, and suspicio
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/worm-detector.git
+git clone https://github.com/davanico1122/worm-detector-.git
 cd worm-detector
 
 # Install dependencies
@@ -171,19 +171,18 @@ Create `config.json` for persistent settings:
 ### Core Components
 
 ```
-worm_detector/
-├── core/
-│   ├── scanner.py          # Network scanning engine
-│   ├── monitor.py          # Traffic monitoring
-│   ├── detector.py         # Detection algorithms
-│   └── signatures.py       # Signature management
+worm-detector/
+├── worm_detector.py
+├── modules/
+│   ├── network_scan.py
+│   ├── signature_check.py
+│   ├── anomaly_detect.py
+│   └── __init__.py
 ├── signatures/
-│   ├── malware/            # Malware signatures
-│   ├── exploits/           # Exploit patterns
-│   └── custom/             # Custom signatures
-├── logs/                   # Detection logs
-├── config.json             # Configuration
-└── worm_detector.py        # Main entry point
+│   └── known_signatures.json
+├── detections.log
+├── README.md
+└── requirements.txt
 ```
 
 ### Detection Engines
