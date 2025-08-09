@@ -1,0 +1,37 @@
+[
+    {
+        "name": "SQL_Slammer",
+        "pattern": "04010101010101010101010101010101010101010101",
+        "type": "hex",
+        "threat": "Worm",
+        "severity": "critical"
+    },
+    {
+        "name": "Conficker",
+        "pattern": "\\x85\\x13\\x3c\\x9e\\xa2\\x32",
+        "type": "hex",
+        "threat": "Worm",
+        "severity": "high"
+    },
+    {
+        "name": "Mirai_Scanner",
+        "pattern": "\\x00\\x00\\x00\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00",
+        "type": "hex",
+        "threat": "Botnet Scanner",
+        "severity": "high"
+    },
+    {
+        "name": "EternalBlue",
+        "pattern": "\\x05\\x00\\x0b\\x03\\x10\\x00\\x00\\x00\\x48\\x00",
+        "type": "hex",
+        "threat": "Exploit",
+        "severity": "critical"
+    },
+    {
+        "name": "Generic_Malware_HTTP",
+        "pattern": "(GET|POST) \\/[a-f0-9]{32}",
+        "type": "regex",
+        "threat": "Malware C2",
+        "severity": "medium"
+    }
+]
