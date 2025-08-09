@@ -230,13 +230,9 @@ class CustomDetector(BaseDetector):
 
 ### Requirements
 ```txt
-scapy>=2.4.5
-rich>=10.0.0
-click>=8.0.0
-psutil>=5.8.0
-python-nmap>=0.6.1
-pyyaml>=5.4.0
-requests>=2.25.0
+scapy>=2.5.0
+rich>=13.0.0
+python>=3.9
 ```
 
 ### Testing
